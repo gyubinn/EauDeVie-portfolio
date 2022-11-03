@@ -1,0 +1,883 @@
+**회원가입**
+
+CREATE TABLE member (
+user_id       VARCHAR2(30)  NOT NULL  PRIMARY KEY,
+user_password VARCHAR2(20)  NOT NULL,
+email         VARCHAR2(50)  NOT NULL,
+nickname      VARCHAR2(20)  NOT NULL,
+tel           VARCHAR2(20)  NOT NULL,
+name          VARCHAR2(20)  NOT NULL,
+user_fname    VARCHAR2(100),
+user_fname_en VARCHAR2(50),
+h_follower    NUMBER,
+h_following   NUMBER
+);
+
+
+**향수리스트**
+
+CREATE TABLE perfume_list (
+productid   VARCHAR2(30)   NOT NULL PRIMARY KEY,
+product_name   VARCHAR2(100)    NOT NULL,
+brand      VARCHAR2(30)    NOT NULL,
+gender      VARCHAR2(1),
+strength      VARCHAR2(1),
+lasting      VARCHAR2(1),
+season      VARCHAR2(2),
+note1      VARCHAR2(30),
+note2      VARCHAR2(30),
+note3      VARCHAR2(30),
+store      VARCHAR2(30),
+pl_fname      VARCHAR2(100)   NOT NULL,
+pl_fname_en   VARCHAR2(500),
+pro_duct_id   VARCHAR2(30)    NOT NULL,
+coment varchar2(1000),
+coment1 varchar2(300),
+coment2 varchar2(300),
+coment3 varchar2(300);
+);
+
+** 취향테스트 **
+CREATE TABLE test_result (
+  result_id   VARCHAR2(40) PRIMARY KEY,
+  gender      VARCHAR2(2),
+  age         VARCHAR2(2),
+  strength    VARCHAR2(2),
+  lasting     VARCHAR2(2),
+  season      VARCHAR2(2),
+  mood        VARCHAR2(9),
+  mood2       VARCHAR2(9),
+  user_likes  VARCHAR2(9),
+  user_likes2 VARCHAR2(9),
+  user_hates  VARCHAR2(9),
+  user_hates2 VARCHAR2(9),
+  result_code VARCHAR2(20)
+);
+
+
+** 리뷰 **
+CREATE TABLE REVIEW(
+  review_id NUMBER PRIMARY KEY, -- 리뷰 고유번호
+  productid VARCHAR2(30), -- 제품번호
+  user_id VARCHAR2(30) NOT NULL, --유저 아이디
+  nickname VARCHAR2(20) NOT NULL, --닉네임
+  re_date DATE NOT NULL, --작성일
+  re_like NUMBER, --좋아요
+  re_content VARCHAR2(1500) NOT NULL, --리뷰내용
+  re_fname VARCHAR2(100), -- 이미지파일명
+  re_fsize NUMBER, -- 이미지크기
+  re_fname_en VARCHAR2(50),--이미지가상이름
+USER_FNAME_EN varchar2(50),
+  
+  CONSTRAINT PERFUME_LIST_product_id_FK
+  FOREIGN KEY (productid) REFERENCES PERFUME_LIST (productid),
+  CONSTRAINT member_user_id_FK
+  FOREIGN KEY (user_id) REFERENCES member (user_id)
+);
+
+
+CREATE SEQUENCE review_SQ
+INCREMENT BY 1
+START WITH 1;
+
+(임시회원)
+INSERT INTO member(user_id, user_password, email, nickname, tel, name , h_follower, h_following, user_fname , user_fname_en)
+VALUES ( 'testAccount3' , '1q2w3e4r!' , 'test123@mail.com' , 'terqq1' , '010-1234-9999','테스터1' , 0, 0 , 'Eau de Lierre Eau de Toilette.jpg' ,'123Eau de Lierre Eau de Toilette.jpg') ;
+INSERT INTO member(user_id, user_password, email, nickname, tel, name , h_follower, h_following, user_fname , user_fname_en)
+VALUES ( 'testAccount4' , '1q2w3e4r!' , 'test1234@mail.com' , 'terqq2' , '010-1234-9998','테스터2' , 0, 0 , 'Eau de Minthé.jpg' ,'123Eau de Minthé.jpg') ;
+INSERT INTO member(user_id, user_password, email, nickname, tel, name , h_follower, h_following, user_fname , user_fname_en)
+VALUES ( 'testAccount5' , '1q2w3e4r!' , 'test12345@mail.com' , 'terqq3' , '010-1234-9997','테스터3' , 0, 0 , 'Eau des Sens Eau de Toilette.jpg' ,'123Eau des Sens Eau de Toilette.jpg') ;
+
+(추가 리뷰)
+insert into review (review_id, productid, user_id, nickname, re_date, re_content, user_fname_en
+-- ,re_fname, re_fsize, re_fname_en -- 사진 파일이 있는 경우 추가
+)
+  values (review_SQ.nextval, '554NM5WACIGRPM', 'testAccount3', 'terqq1', sysdate, '연인을 안은 것 같은 포근한 향', '123Eau de Lierre Eau de Toilette.jpg'
+--  ,#{re_fname}, #{re_fsize}, #{re_fname_en} -- 사진 파일이 있는 경우 변경하여 추가
+)
+;
+
+insert into review (review_id, productid, user_id, nickname, re_date, re_content, user_fname_en
+)
+  values (review_SQ.nextval, '554NM5WACIGRPM', 'testAccount4', 'terqq2', sysdate, '친구들이 오늘따라 향이 좋다고 들러붙어 곤란했다', '123Eau de Minthé.jpg'
+)
+;
+
+insert into review (review_id, productid, user_id, nickname, re_date, re_content, user_fname_en
+)
+  values (review_SQ.nextval, '554NM5WACIGRPM', 'testAccount5', 'terqq3', sysdate, '우리집 강쥐가 엄청 좋아하는 향ㅎㅎ', '123Eau des Sens Eau de Toilette.jpg'
+)
+;
+
+insert into review (review_id, productid, user_id, nickname, re_date, re_content, user_fname_en
+)
+  values (review_SQ.nextval, '555WS5ROSSPAPF', 'testAccount3', 'terqq1', sysdate, '받자마자 좋다고 비명질러서 민원들어옴 ㅠㅠ', '123Eau de Lierre Eau de Toilette.jpg'
+)
+;
+
+insert into review (review_id, productid, user_id, nickname, re_date, re_content, user_fname_en
+)
+  values (review_SQ.nextval, '555WS5ROSSPAPF', 'testAccount4', 'terqq2', sysdate, '이 향수를 뿌리면 밤에 잠이 잘 옵니다', '123Eau de Minthé.jpg'
+)
+;
+
+insert into review (review_id, productid, user_id, nickname, re_date, re_content, user_fname_en
+)
+  values (review_SQ.nextval, '555WS5ROSSPAPF', 'testAccount5', 'terqq3', sysdate, '하루를 이 향수로 시작하면 일이 잘 풀립니다.', '123Eau des Sens Eau de Toilette.jpg'
+)
+;
+
+insert into review (review_id, productid, user_id, nickname, re_date, re_content, user_fname_en
+)
+  values (review_SQ.nextval, '556NM3WACIARPM', 'testAccount3', 'terqq1', sysdate, '아무리 씻어도 사라지지 않는 체향에 눈물 줄줄 흘리고 있을 때 나를 구원해준 단 하나의 향수', '123Eau de Lierre Eau de Toilette.jpg'
+)
+;
+
+insert into review (review_id, productid, user_id, nickname, re_date, re_content, user_fname_en
+)
+  values (review_SQ.nextval, '556NM3WACIARPM', 'testAccount4', 'terqq2', sysdate, '정말 최고의 향수입니다', '123Eau de Minthé.jpg'
+)
+;
+
+insert into review (review_id, productid, user_id, nickname, re_date, re_content, user_fname_en
+)
+  values (review_SQ.nextval, '556NM3WACIARPM', 'testAccount5', 'terqq3', sysdate, '힘들 때 위로가 되어준 향수', '123Eau des Sens Eau de Toilette.jpg'
+)
+;
+
+commit;
+
+**커뮤니티 **
+
+1. 향수이야기
+    
+    CREATE TABLE PERFUME_STORY (
+    PS_ARTICLE_ID NUMBER NOT NULL Primary Key,
+    PS_TITLE varchar2(300) NOT NULL,
+    PS_HEAD VARCHAR2(30) NOT NULL,
+    PS_CONTENT varchar2(4000),
+    USER_ID VARCHAR2(30),
+    PS_NICKNAME VARCHAR2(20),
+    PS_DATE DATE NOT NULL,
+    PS_LIKE NUMBER,
+    PS_FNAME VARCHAR2(300),
+    PS_FSIZE NUMBER,
+    PS_FNAME_EN VARCHAR2(500),
+    PS_COUNT NUMBER DEFAULT '0' NOT NULL, 	
+PS_COMMCNT NUMBER
+    );
+    
+    CREATE SEQUENCE perfume_story_seq
+    INCREMENT BY 1
+    START WITH 1
+    MINVALUE 1
+    MAXVALUE 999999
+    NOCACHE;
+
+- 댓글
+
+        CREATE TABLE PERFUME_STORY_COMM (
+        psc_comment_id NUMBER NOT NULL PRIMARY KEY,
+        ps_article_id NUMBER DEFAULT 0,
+        psc_user_id VARCHAR2(30) NOT NULL,
+        psc_content VARCHAR2(900) NOT NULL,
+        psc_date DATE,
+        CONSTRAINT FK_STORY FOREIGN KEY (ps_article_id)
+        REFERENCES PERFUME_STORY (ps_article_id) ON DELETE CASCADE
+        );
+   
+        CREATE SEQUENCE ps_comm_seq
+        START WITH 1
+        INCREMENT BY 1;
+        
+    
+   2. 중고거래
+        
+        CREATE TABLE MARKET (
+        m_article_id NUMBER NOT NULL Primary Key,
+        m_title varchar2(300) NOT NULL,
+        user_id VARCHAR2(30) NOT NULL,
+        m_status VARCHAR2(20),
+        m_head VARCHAR2(20),
+        m_date DATE NOT NULL,
+        m_like NUMBER,
+        m_content varchar2(4000) ,
+        m_fname VARCHAR2(300),
+        m_fsize NUMBER,
+        m_fname_en VARCHAR2(500),
+        m_count NUMBER DEFAULT 0 NOT NULL,
+        m_product VARCHAR2(100),
+        m_pastprice NUMBER DEFAULT 0,
+        m_saleprice NUMBER DEFAULT 0,
+        m_purdate DATE,
+        m_expdate DATE,
+        m_place VARCHAR2(100),
+        m_brand VARCHAR2(100),
+        m_size NUMBER DEFAULT 0,
+        m_use VARCHAR2(100),
+        m_saleway VARCHAR2(100),
+m_commcnt NUMBER
+        );
+        
+        CREATE SEQUENCE market_seq
+        INCREMENT BY 1
+        START WITH 1
+        MINVALUE 1
+        MAXVALUE 999999
+        NOCACHE;
+        
+- 댓글
+
+        CREATE TABLE MARKET_COMM (
+        mc_comment_id NUMBER NOT NULL PRIMARY KEY,
+        m_article_id NUMBER DEFAULT 0,
+        mc_user_id VARCHAR2(30) NOT NULL,
+        mc_content VARCHAR2(900) NOT NULL,
+        mc_date DATE,
+    CONSTRAINT FK_MARKET FOREIGN KEY (m_article_id)
+    REFERENCES MARKET (m_article_id) ON DELETE CASCADE
+        );
+
+    CREATE SEQUENCE m_comm_seq
+    START WITH 1
+    INCREMENT BY 1;
+    
+
+    **향스타그램**
+    
+    - 향스타 포스트
+
+        CREATE TABLE HYANGSTA_POST(
+        hpost_id number,
+        hp_date	date NOT NULL,
+        hp_tag	VARCHAR2(200),
+        hp_content varchar2(1500) NOT NULL,
+        hp_fname	varchar2(100),
+        hp_fsize	number,
+        hp_fname_en	varchar2(50),
+        hp_like	number,
+        user_id	varchar2(30),
+        
+        CONSTRAINT pk_hpost_id PRIMARY key (hpost_id),
+        CONSTRAINT fk_member_user_id FOREIGN key (user_id)
+        REFERENCES member(user_id) ON DELETE CASCADE
+        );
+        
+    - 향스타 시퀀스
+        CREATE SEQUENCE seq_hpost
+        INCREMENT BY 1
+        START WITH 1
+        MINVALUE 1
+        MAXVALUE 9999
+        NOCYCLE
+        NOCACHE
+        NOORDER;
+        
+    - 향스타 댓글
+
+        CREATE TABLE HYANGSTA_COMM (
+        hcomment_id	number,
+        hpost_id	number not null,
+        hc_date	date not null,
+        hc_content	varchar2(900) not null,
+        hc_user_id	varchar2(30) not null,
+        
+        CONSTRAINT pk_hcomment_id PRIMARY key (hcomment_id),
+        CONSTRAINT fk_hp_hpost_id FOREIGN key (hpost_id)
+        REFERENCES hyangsta_post(hpost_id) ON DELETE CASCADE
+        );
+        
+    - 향스타 댓글 시퀀스
+        CREATE SEQUENCE seq_hcom
+        INCREMENT BY 1
+        START WITH 1
+        MINVALUE 1
+        MAXVALUE 9999
+        NOCYCLE
+        NOCACHE
+        NOORDER;
+        
+    - 향스타 팔로우
+
+        CREATE TABLE FOLLOW (
+        following_id VARCHAR2(30) not null,
+        user_id	VARCHAR2(30) not null,
+        
+        CONSTRAINT fk_following_user_id FOREIGN key (following_id)
+        REFERENCES member(user_id) ON DELETE CASCADE,
+        CONSTRAINT fk_follow_user_id FOREIGN key (user_id)
+        REFERENCES member(user_id) ON DELETE CASCADE
+        );
+        
+    - 향스타 좋아요
+
+        CREATE TABLE HYANGSTA_LIKE(
+        hpost_id NUMBER not null,
+        user_id	VARCHAR2(30) not null,
+        
+        CONSTRAINT fk_like_user_id FOREIGN key (user_id)
+        REFERENCES member(user_id) ON DELETE CASCADE,
+        CONSTRAINT fk_like_hpost_id FOREIGN key (hpost_id)
+        REFERENCES hyangsta_post(hpost_id) ON DELETE CASCADE,
+        CONSTRAINT uq_hpost_user_id UNIQUE(hpost_id, user_id)
+        );
+
+
+** 향수리스트 insert문 **
+
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '소금', COMENT3 = '바다향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '001NS5ARSAMAPM';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '과일향', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '002WM5FLUISWPM';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '바닐라', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '003NM7AMVASWFW';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '장미', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '004WM5FLROFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '스파이시하고 신선한', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '005WM5UIFSCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '006WW5FLWHFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '007NM5UISWGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '바닐라', COMENT3 = '꽃향 전반', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '008NM5POVAFLFW';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '009NM7ROOUSWFW';
+UPDATE PERFUME_LIST SET COMENT1 = '노란색 계열의 꽃향',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '010NM5YEWAPOPF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '011NM5CIARFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '012NM5CIWHFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '013NM5CIOUWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '과일향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '014NM5WOWAUIFW';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '015WM5WAAMWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '과일향', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '016NM5POUIFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '꽃향 전반', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '017WM5ROFLCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '018WM5WHSWFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '견과류', COMENT3 = '', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '019NM5WONUNOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '바닐라', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '020NM7ARVAWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '꽃향 전반', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '021NM5UIFLSWPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '과일향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '022WM5WHARUIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '물향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '023NM5CIMUAQPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '024NM5CIWOAMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하고 신선한',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '025NM5FSARGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰꽃의 일종, 독특하고 관능적인 향',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '026WM7TUWHAMPF';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '카카오, 초콜릿', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '027NM5WACASWFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '꿀', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '봄, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '028NM5CIHOSWPW';
+UPDATE PERFUME_LIST SET COMENT1 = '노란색 계열의 꽃향',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '꿀', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '029WM5YEWHHOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '030NM5ARCIFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '절간에서 피우는 향이나 인센스의 느낌 같은 연기향',  COMENT2 = '가죽향', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '031NM5SMLEARFW';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '과일향', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '032NM5SWUIFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 부드러운',  COMENT2 = '향신료, 스파이시', COMENT3 = '꽃향 전반', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '033NM5SSANFLFW';
+UPDATE PERFUME_LIST SET COMENT1 = '아몬드향 (너티의 일종)',  COMENT2 = '꿀', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '034NM5MDHOSWPF';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '카라멜', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '035WM7VAWACMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '036NM5GRWOFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '여름, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '037NM5WOARFSMF';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT3 = '이리스와 비슷, 부드럽고 파우더리하고 로맨틱한 향, 여성적', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '038NM5POIRVIFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '노란색 계열의 꽃향', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '039NM5WOYESWPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '과일향', COMENT3 = '스파이시하지만 부드러운', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '040NM5WOUISSPF';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '향신료, 스파이시', COMENT3 = '스파이시하지만 부드러운', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '041NS1SWANSSFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '이끼', COMENT3 = '꽃향 전반', COMENT= '봄, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '042NM5CIMOFLPW';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '흰색 계열의 꽃향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '043NM5GRARWHPM';
+UPDATE PERFUME_LIST SET COMENT1 = '라벤더 (아로마, 허브의 일종)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '가죽향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '044NM5LVWOLEPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '045NM5CIWOARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '물향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '046WM5UISWAQPM';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '047WM5VAAMSWFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '048NW5CIARWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '049WW5UIFRSWPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '꽃향 전반', COMENT3 = '노란색 계열의 꽃향', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '050WM7WHFLYEPF';
+UPDATE PERFUME_LIST SET COMENT1 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '051WM5IRWOPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '052WM5WHCIGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '발삼, 부드럽고 따뜻하고 달짝지근한 우디계열', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '053NS7AMBAWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '여름, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '054NM5ARWOGRMF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '055NM5CIGRFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '허브 (아로마와 거의 동일)', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '056MS9WAHESWFW';
+UPDATE PERFUME_LIST SET COMENT1 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움',  COMENT2 = '과일향', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '057WM5IRUIPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하고 신선한',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '058NM5FSARCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '침엽수향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '059NM7WOARCOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '꽃향 전반', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '060WM5WHFLGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하고 신선한',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '발삼, 부드럽고 따뜻하고 달짝지근한 우디계열', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '061NM7FSARBAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '062WW5VAPOWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '이리스와 비슷, 부드럽고 파우더리하고 로맨틱한 향, 여성적',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '아쿠아, 바다, 깨끗, 쿨', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '063WM5VIPOOZPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '064NM5CIGRFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '꽃향 전반', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '065WM5WHFLGRPF';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '장미', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '066NM5UIROFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하고 신선한',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '향신료, 스파이시', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '067NM5FSARANPF';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '노란색 계열의 꽃향', COMENT3 = '카카오, 초콜릿', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '068WM5WHYECAPF';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '069NM5ARWOGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '070NM5CIARFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '장미', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '071WS7AMROWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '072NW9MUAMWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '073NM5CIWHARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '074WM5GRIRPOPF';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '꽃향 전반', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '075WM5ROFLMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '바닐라', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '076NM7WOWAVAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '장미', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '077WS9WAAMROFW';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '바닐라', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '078NS7WAVAPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '흰꽃의 일종, 독특하고 관능적인 향', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '079NS9WHTUWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT= '봄, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '080NW5POMUIRPW';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '물향', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '081WM5FLAQFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '땅, 흙, 풀', COMENT3 = '장미', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '082NS9WOEAROFW';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '083NM7GRWHFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '084MM7WOMUAMPF';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '085WM5POWOIRPF';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '이리스와 비슷, 부드럽고 파우더리하고 로맨틱한 향, 여성적', COMENT3 = '장미', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '086WM7POVIROPF';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '침엽수 진액 향, 우디계열', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '087NS9UISWOUFW';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '088WS7ROARFSPF';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '과일향', COMENT3 = '라벤더 (아로마, 허브의 일종)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '089NS7SWUILVPF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '090NW5CIGRFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '바다향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '091NM7WHMUMAPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하고 신선한',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '장미', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '092NS7FSARROPF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '꽃향 전반', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '093NM7CIFLWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '094MM7WOARCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '095NM5WOPOMUPF';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '허브향, 흙향, 오리엔탈풍', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '096MS7WOPAAMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '침엽수 진액 향, 우디계열',  COMENT2 = '장미', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '097NS9OUROAMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '098MM5ARFSGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '099NS1MUARWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '100NM5UISWWOPF';
+UPDATE PERFUME_LIST SET COMENT1 = '쨍한 비누향',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '101WS9ALWHAMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '102NM5CIWHMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하고 신선한',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '장미', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '103NS7FSWAROFW';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '노란색 계열의 꽃향', COMENT3 = '꽃향 전반', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '104WM7POYEFLPF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '105NM5CIWHGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '106NM5CIFSARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '더운 열대기후를 연상시키는 향, 열대 꽃이나 열대 과일 등', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '107NM5ARTRCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '108NM5CIWOARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '109WW5ROCIARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '과일향', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '여름, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '110NM5WOUISWMF';
+UPDATE PERFUME_LIST SET COMENT1 = '절간에서 피우는 향이나 인센스의 느낌 같은 연기향',  COMENT2 = '가죽향', COMENT3 = '과일향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '111NS7SMLEUIFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '여름, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '112NM5CIARFSMF';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '스파이시하지만 따스한', COMENT= '여름, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '113NW5ARWOWAMF';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '꽃향 전반', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '114NS5ROFLMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '꽃향 전반', COMENT3 = '흰색 계열의 꽃향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '115NM5GRFLWHPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '더운 열대기후를 연상시키는 향, 열대 꽃이나 열대 과일 등', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '116NW5UITRCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '노란색 계열의 꽃향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '크리미하고 달콤한 과일 향 (복숭아, 살구, 코코넛, 무화과 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '117WM3YESWLAPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '118NM5WOCIARPF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '119NW5CIWHGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '120NM3CIARFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '121NM5WOARFSPF';
+UPDATE PERFUME_LIST SET COMENT1 = '더운 열대기후를 연상시키는 향, 열대 꽃이나 열대 과일 등',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '과일향', COMENT= '여름, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '122NS9TROUUIMF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '123NW3CISWARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '124WS5CIWHGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '125NM5WOPOARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '126WM5POFRFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '127NM5ARCIWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '128NW5WOARFSAA';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '129NM5FLWOPOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향',  COMENT2 = '쨍한 비누향', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '130WM5FRALMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '스파이시하지만 부드러운', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '131WM5FLGRSSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '꽃향 전반', COMENT3 = '스파이시하지만 부드러운', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '132NM5ROFLSSPF';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '가죽향', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '133NM5UILEPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '134NS7UISWWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '과일향', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '135NM5LEUIWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '흰색 계열의 꽃향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '136NM5CISWWHPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '137NM5UIWOGRPF';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '허브향, 흙향, 오리엔탈풍', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '138NS7WOAMPAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '장미', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '139NM5MUROFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '스파이시하고 신선한', COMENT3 = '담배향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '140NS7AMFSTOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '발삼, 부드럽고 따뜻하고 달짝지근한 우디계열', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '141NM7AMWOBAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '142NS7WOOUWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '143NM5MUAMARPF';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '과일향', COMENT3 = '스파이시하고 신선한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '144NM5WOUIFSFW';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '허브향, 흙향, 오리엔탈풍', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '145NM5MUPAWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '꽃향 전반', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '146WM5WHFLFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '147NM5ARCIWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '148NM5WOARPOPF';
+UPDATE PERFUME_LIST SET COMENT1 = '침엽수 진액 향, 우디계열',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '149NM7OUARWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '바닐라', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '150NM5AMWOVAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '이끼', COMENT3 = '꽃향 전반', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '151NM5ROMOFLPF';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '과일향', COMENT3 = '침엽수 진액 향, 우디계열', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '152NS7LEUIOUFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '흰꽃의 일종, 독특하고 관능적인 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '153WM7WHGRTUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '과일향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '154NS7ROWAUIFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '꿀', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '155NM5WHHOSWAA';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '가죽향', COMENT3 = '동물에게서 나오는 향료', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '156NM7ROLENMPF';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '절간에서 피우는 향이나 인센스의 느낌 같은 연기향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '157NS7LEWOSMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '스파이시하지만 부드러운', COMENT3 = '바닐라', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '158NS9POSSVAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '쨍한 비누향', COMENT3 = '허브향, 흙향, 오리엔탈풍', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '159NS7AMALPAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '160WW1CIFSARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '161WM5ARFSCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하고 신선한',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '162MM7FSWOAMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '163NM7UISWCIAA';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '꽃향 전반', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '164NS5WOMUFLAA';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '허브 (아로마와 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '165NM7WHARHEPM';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '스파이시하지만 따스한', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '166NM5AMCIWAAA';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '가죽향', COMENT3 = '꽃향 전반', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '167NM7UILEFLFW';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '168NS7POAMMUFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '169MM5WOCIARPF';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '장미', COMENT3 = '아몬드향 (너티의 일종)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '170NS9LEROMDFW';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '절간에서 피우는 향이나 인센스의 느낌 같은 연기향', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '171NS7POAMSMPF';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '이리스와 비슷, 부드럽고 파우더리하고 로맨틱한 향, 여성적', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '172NS9LEPOVIAA';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '이리스와 비슷, 부드럽고 파우더리하고 로맨틱한 향, 여성적', COMENT3 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT= '봄, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '173NM5POVIIRPW';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '허브향, 흙향, 오리엔탈풍', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '174NS7ARWOPAPF';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '175NM5GRWOSWPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '바닐라', COMENT3 = '스파이시하고 신선한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '176NM5ARVAFSFW';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '177NM7MUPOIRPF';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '178NM5WOARPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '179WM5UIGRARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '흰꽃의 일종, 독특하고 관능적인 향', COMENT3 = '동물에게서 나오는 향료', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '180WM5WHTUNMPM';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '181NM7POWOARPF';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '182NM5WOPOWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '183NM5VAAMWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '184NM5WOGRFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '허브향, 흙향, 오리엔탈풍', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '185NM7ROPAWOPF';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '과일향', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '186WM5ROUIFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰꽃의 일종, 독특하고 관능적인 향',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '187NM5TUWHMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '188NM5CIWHMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '허브향, 흙향, 오리엔탈풍', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '189NM7ARPAWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '190NM5CIARFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '땅, 흙, 풀', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '191NM5ROEAWOPF';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '192NM5GRWOFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움',  COMENT2 = '과일향', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '193NM5IRUIPOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '194NM7CIGRFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '꽃향 전반', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '195WM5WHFLGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '장미', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '196NS9WOOUROFW';
+UPDATE PERFUME_LIST SET COMENT1 = '담배향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '197NM7TOSWIRFW';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '꽃향 전반', COMENT3 = '허브 (아로마와 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '198WM5ROFLHEPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '199NM5WAWOGRFW';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '200NM7AMWOWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '201NM5CIARWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하고 신선한',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '202NM5FSARGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '담배향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '203NM7SWAMTOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '204WW3GRFRWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '가죽향', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '205NM5UILESWAA';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '206NW5UISWGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '가죽향', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '207NM5WOLEPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '208NW5FLGRMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '스파이시하고 신선한', COMENT3 = '스파이시하지만 따스한', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '209NM5WOFSWAAA';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '210NW5CIFSARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '211NW5CIWOARAA';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '212NM9GRWOSWPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '213NS5ARCIWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '허브향, 흙향, 오리엔탈풍', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '214NM5CIPAWOAA';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '럼주 (술)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '여름, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '215NM9AMRUWOMF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '216NM7CIFSARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '허브향, 흙향, 오리엔탈풍', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '217NM9MUGRPAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '218NW3MUWOPOPF';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '과일향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '219NS5ARFSUIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '220NS3CIWOMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '아몬드향 (너티의 일종)', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '221NM5VAMDSWPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '과일향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '222NM5CIWOUIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '223NM5CIARFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '224NW5CICICIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '225NM5ARFSCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '226NW3CIARWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '꽃향 전반', COMENT3 = '흰색 계열의 꽃향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '227WM5CIFLWHPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아쿠아, 바다, 깨끗, 쿨', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '228NM5CIOZARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '229WM5WHPOCIPF';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '230NM5ARWOFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하고 신선한',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '231NM5FSARWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '232NM5CIWOARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '흰꽃의 일종, 독특하고 관능적인 향', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '233WM5WHTUCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '노란색 계열의 꽃향', COMENT3 = '장미', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '234WS7WOYEROPF';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '땅, 흙, 풀', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '235WS7WOAMEAPF';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '236WS9FLCIWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '파우더향 (화장품 분내)', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '237WS9IRCIPOAA';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '238WS5CIWOARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '여름, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '239NS9CIWOARMF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '240NS7CIAMFSPF';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '라벤더 (아로마, 허브의 일종)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '241NS1ARFSLVPF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '흰색 계열의 꽃향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '242MM7CIARWHPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '243MM5CIWAARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '244NM5ARGRCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '침엽수 진액 향, 우디계열', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '245NS7WOCIOUFW';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '246MS7LECIWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '꽃향 전반', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '247WM5ROFLFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '꽃향 전반', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '248WM5ROFLFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '침엽수 진액 향, 우디계열', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '249MS7WOCIOUFW';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '250NS7LEWOCIFW';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '251NW7ARCIFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '252NM5CIARFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '장미', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '253MM7WAOUROFW';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '254NM5VAPOCIFW';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '과일향', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '255NM5FLUICIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '침엽수 진액 향, 우디계열',  COMENT2 = '가죽향', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '256MS9OULECIFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '257NM5CIFSARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '258NM7CIARWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '259NW5FLCIMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '스파이시하고 신선한', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '260MM7AMFSWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '꽃향 전반', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '261NW5CIFLFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '동물에게서 나오는 향료', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '262MM7AMMUNMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '스파이시하고 신선한', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '263NM5WOFSARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '264MM5ARFSCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '265NS7WOCIAMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '266WW5CIWHIRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '꽃향 전반', COMENT3 = '장미', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '267WS5WOFLROFW';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '꽃향 전반', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '268WM5ROFLCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '269WM5CIWHARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '270NM9CIFSARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '땅, 흙, 풀', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '271NM7WOEAAMPF';
+UPDATE PERFUME_LIST SET COMENT1 = '담배향',  COMENT2 = '바닐라', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '272NW5TOVASWFW';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '꽃향 전반', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '273WW5FLFLFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '274NW5CIARFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '과일향', COMENT3 = '아쿠아, 바다, 깨끗, 쿨', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '275WM5WHUIOZPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '276WW5WOPOIRPF';
+UPDATE PERFUME_LIST SET COMENT1 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '277NW5IRWHPOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '허브향, 흙향, 오리엔탈풍',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '278NS9PAWOWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '꽃향 전반', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '279MS7LEFLWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '스파이시하지만 따스한', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '280NM5ARFSWAAA';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '꿀', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '281NS7CISWHOAA';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '282NW5POMUMUFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '꽃향 전반', COMENT3 = '장미', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '283NM5WHFLROPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '284NM5WHMUWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '바닐라', COMENT3 = '카카오, 초콜릿', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '285NM7WAVACAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT3 = '이리스와 비슷, 부드럽고 파우더리하고 로맨틱한 향, 여성적', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '286WM5POIRVIPF';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '허브 (아로마와 거의 동일)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '287NM5ARHEWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '절간에서 피우는 향이나 인센스의 느낌 같은 연기향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '288MW5LEWOSMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '땅, 흙, 풀', COMENT3 = '허브향, 흙향, 오리엔탈풍', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '289NM7WOEAPAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '290WS5ROPOPOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '291NM7MUCIPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '292NS7WOPOARFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '293NM5CIWHFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '흰꽃의 일종, 독특하고 관능적인 향', COMENT3 = '스파이시하지만 따스한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '294WM7WHTUWAPM';
+UPDATE PERFUME_LIST SET COMENT1 = '이리스와 비슷, 부드럽고 파우더리하고 로맨틱한 향, 여성적',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '295WS5VIPOGRPF';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '장미', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '296NM5WOROMUAA';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '과일향', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '297NW3WHUIFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '298NM5CIARFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '크리미하고 달콤한 과일 향 (복숭아, 살구, 코코넛, 무화과 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '299WS5WHCILAPM';
+UPDATE PERFUME_LIST SET COMENT1 = '노란색 계열의 꽃향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '이끼', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '300WS7YESWMOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '바닐라', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '301NW5ARFSVAPF';
+UPDATE PERFUME_LIST SET COMENT1 = '이끼',  COMENT2 = '땅, 흙, 풀', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '302NW3MOEAGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰꽃의 일종, 독특하고 관능적인 향',  COMENT2 = '바닐라', COMENT3 = '흰색 계열의 꽃향', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '303NW5TUVAWHAA';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '스파이시하지만 따스한', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '304NW5ROWOWAAA';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '바닐라', COMENT3 = '꽃향 전반', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '305NW5POVAFLFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '절간에서 피우는 향이나 인센스의 느낌 같은 연기향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '306NM5WOARSMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '비누향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '307NW3WHCISOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '꿀',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '부드럽고 머스키한 꿀향', COMENT= '여름, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '308NM3HOWOBEMF';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '발삼, 부드럽고 따뜻하고 달짝지근한 우디계열', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '309NM7AMWOBAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '310NW3CIFSGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '311NW5WOWAARPF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '312NM1CIARFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '313NW3CIFSFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '발삼, 부드럽고 따뜻하고 달짝지근한 우디계열', COMENT3 = '절간에서 피우는 향이나 인센스의 느낌 같은 연기향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '314NM5AMBASMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '315NS9WOAMWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '바닐라', COMENT3 = '바닐라', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '316NS7AMVAVAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '아몬드향 (너티의 일종)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '317NS9AMMDWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '318NM7VAPOAMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '장미', COMENT3 = '침엽수 진액 향, 우디계열', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '319NS9VAROOUFW';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '320NM7ARFSWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '321WM7WOARCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '322WM7ROCIFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '323NS9ROOUPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '324NM5CIWHFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '이리스와 비슷, 부드럽고 파우더리하고 로맨틱한 향, 여성적', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '325WM7WHVIPOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '흰색 계열의 꽃향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '326NM5CIMUWHPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '327MM5ARWOCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '라벤더 (아로마, 허브의 일종)', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '328MM5WOLVARAA';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '329NM5GRCIARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '330MM7ROAMCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '꽃향 전반', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '331NS7ROOUFLFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '332NS7WHCIMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '333NM7WAOUARFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '334NS7CIGRARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '335NM7CIWAWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '과일향', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '336NM5CIUIMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '꽃향 전반', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '337WW5ROFLFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '338NS9WAOUWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '339MM7VAWOARAA';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '꽃향 전반', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '340NS9ROOUFLFW';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '꿀', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '341NS9AMHOWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '342WS7WHWOIRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '꽃향 전반', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '343NM7CIFLMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT3 = '흰색 계열의 꽃향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '344NS3CIFRWHPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '바닐라', COMENT3 = '발삼, 부드럽고 따뜻하고 달짝지근한 우디계열', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '345NM7WOVABAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '담배향',  COMENT2 = '럼주 (술)', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '346MM5TORUSWFW';
+UPDATE PERFUME_LIST SET COMENT1 = '라벤더 (아로마, 허브의 일종)',  COMENT2 = '커피', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '347NM5LVCFWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '노란색 계열의 꽃향', COMENT3 = '코코넛', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '348WM5SWYECCPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '바닐라', COMENT3 = '스파이시하고 신선한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '349NM5WOVAFSFW';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT3 = '장미', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '350NM5MUFRROPM';
+UPDATE PERFUME_LIST SET COMENT1 = '비누향',  COMENT2 = '코코넛', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '351NM5SOCCMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '스파이시하고 신선한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '352NM5WOPOFSFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '353NM5WHSWGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '354NM5CIGRARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '바다향',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '쨍한 비누향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '355NM5MAARALPM';
+UPDATE PERFUME_LIST SET COMENT1 = '물향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '356WM5AQWOGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '357WM5VAPOIRPF';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '358NM5WHFRMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '꽃향 전반', COMENT3 = '흰꽃의 일종, 독특하고 관능적인 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '359WM5WHFLTUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하고 신선한',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '라벤더 (아로마, 허브의 일종)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '360MM5FSARLVPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '스파이시하지만 따스한', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '361NM5WOAMWAPF';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '크리미하고 달콤한 과일 향 (복숭아, 살구, 코코넛, 무화과 등)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '362WM5GRLAFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '363NM5WOGRARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '364NM7SWOUWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '꽃향 전반', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '365NM5MUFLPOPF';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '꽃향 전반', COMENT3 = '장미', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '366NM5WOFLROPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '367NM5UIWHSWPF';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '368NM5GRARFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '369NM5CIWHFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '370NM5CIGRARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '쨍한 비누향', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '371NM5MUALPOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '372NS5POMUAMPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '가죽향', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '373NW7WOPOLEPF';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '374NM7MUAMWOPF';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '스파이시하고 신선한', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '375NM7WOFSSWPF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '376NM5CIARWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '장미', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '377NM7WOROFSPF';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '과일향', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '378NM5WOUICIPF';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '흰꽃의 일종, 독특하고 관능적인 향', COMENT3 = '동물에게서 나오는 향료', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '379WM7WHTUNMPM';
+UPDATE PERFUME_LIST SET COMENT1 = '허브향, 흙향, 오리엔탈풍',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '아쿠아, 바다, 깨끗, 쿨', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '380NM7PAWOOZPF';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '381NS5WOMUPOPF';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '382NM5VAWOMUFW';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '절간에서 피우는 향이나 인센스의 느낌 같은 연기향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '383NS5VAWOSMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '절간에서 피우는 향이나 인센스의 느낌 같은 연기향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '384NW9LEWOSMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '바닐라', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '385NM7AMMUVAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '386NM7WOAMFSPF';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '땅, 흙, 풀', COMENT3 = '노란색 계열의 꽃향', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '387WW7WOEAYEPF';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '이리스와 비슷, 부드럽고 파우더리하고 로맨틱한 향, 여성적', COMENT3 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '388NM7POVIIRPF';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '389NM5WHCIFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '과일향', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '390NS1MUUIFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '391NM5CIWHARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '담배향', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '392NM7WOTOWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '393NM5WHCIMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT3 = '쨍한 비누향', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '394NM7MUFRALPF';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '동물에게서 나오는 향료', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '395NW7MUNMAMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '396NM7CIWAMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '땅, 흙, 풀', COMENT3 = '이끼', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '397NM7WOEAMOPF';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '스파이시하고 신선한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '398NW7AMWOFSFW';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '399NM5AMWOWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '쨍한 비누향', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '400NW5ROALMUPF';
+UPDATE PERFUME_LIST SET COMENT1 = '쨍한 비누향',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '401NM7ALMUFRPF';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '402NM5WHCIMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '과일향', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '403NW1CIUIFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '가죽향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '404MM7UISWLEPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아쿠아, 바다, 깨끗, 쿨', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '405MM7CIOZPOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '과일향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '406NM5GRCIUIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '코코넛', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '407NM5CISWCCPM';
+UPDATE PERFUME_LIST SET COMENT1 = '바다향',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '소금', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '408NM5MACISAPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '409NM7WOMUPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '410MM7ARWOGRPF';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '411WS7UIWOCIPF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '412MM5CIWOMUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '413NM5CIWOARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '노란색 계열의 꽃향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '414WM7FLCIYEPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '415MM5CIWOPOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '416NM7ARWAWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '417MM5CIWOFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '라벤더 (아로마, 허브의 일종)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '418MM7WOARLVFW';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하고 신선한',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '419NM5FSARGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '420MM5ARCIFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '421NM7WOARCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT3 = '흰색 계열의 꽃향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '422WM5UIFRWHPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '423WM5WHSWPOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '스파이시하고 신선한', COMENT3 = '스파이시하지만 따스한', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '424NM5WOFSWAPF';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '파우더향 (화장품 분내)', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '425NW5VACIPOAA';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '이리스와 비슷, 부드럽고 파우더리하고 로맨틱한 향, 여성적', COMENT3 = '꽃향 전반', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '426WM7POVIFLFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '과일향', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '427WM5CIUIWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '428MM5CIWAWOPF';
+UPDATE PERFUME_LIST SET COMENT1 = '파우더향 (화장품 분내)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '이리스와 비슷, 부드럽고 파우더리하고 로맨틱한 향, 여성적', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '429WM7POWOVIPF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '과일향', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '430NM5CIUIARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '431WM5FLWOCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '이리스와 비슷, 부드럽고 파우더리하고 로맨틱한 향, 여성적',  COMENT2 = '흰꽃의 일종, 독특하고 관능적인 향', COMENT3 = '파우더향 (화장품 분내)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '432WM5VITUPOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '433NM5CIFSAMPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '434NM5CIPOARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '가죽향', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '435MM7UIAMLEAA';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '436MM7ARFSWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '노란색 계열의 꽃향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '437WM5GRWHYEPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '과일향', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '438WM5CIUIWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '꽃향 전반', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '439WM5WHFLFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '흰꽃의 일종, 독특하고 관능적인 향', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '440WM7WHTUGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '441NM5CIPOGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '442NM5WHAMWOAA';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '라벤더 (아로마, 허브의 일종)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '443NM7ARFSLVPF';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '흰색 계열의 꽃향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '444WS9AMWOWHFW';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '445WS7AMWOPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰꽃의 일종, 독특하고 관능적인 향',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '동물에게서 나오는 향료', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '446WS7TUAMNMAA';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '447NM5ARWOFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT= '여름, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '448WS7ROAMIRMF';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '꽃향 전반', COMENT3 = '흰꽃의 일종, 독특하고 관능적인 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '449WM5WHFLTUPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '450WS7ROAMMUAA';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '과일향', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '451MM5CIUIAMPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '452WS5ROCIAMPM';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '흰색 계열의 꽃향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '453WS5AMMUWHFW';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '동물에게서 나오는 향료', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '454NS9LENMCIFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '455MM5CIWAWOAA';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '땅, 흙, 풀', COMENT3 = '허브향, 흙향, 오리엔탈풍', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '456MS7WOEAPAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '담배향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '457MS9VASWTOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '아몬드향 (너티의 일종)', COMENT3 = '체리', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '458NM5SWMDCHFW';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '땅, 흙, 풀', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '459WS9WAEAWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '460NM5WOOUWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '동물에게서 나오는 향료', COMENT3 = '흰색 계열의 꽃향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '461NM7LENMWHFW';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '바닐라', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '462MM7WASWVAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '코코넛',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '463NM5CCWHSWPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '과일향', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '464NM7WOWAUIAA';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '바닐라', COMENT3 = '가죽향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '465NS7ARVALEFW';
+UPDATE PERFUME_LIST SET COMENT1 = '땅, 흙, 풀',  COMENT2 = '장미', COMENT3 = '허브향, 흙향, 오리엔탈풍', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '466NS7EAROPAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '과일향', COMENT3 = '동물에게서 나오는 향료', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '467NS9LEUINMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '468WS7FLSWPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '469NM5CIWHFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '바닐라', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '470WM7SWVAAMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '471MM7WOARCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '코코넛', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '472NM5CIWHCCPM';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '아쿠아, 바다, 깨끗, 쿨', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '473NM7LEWOOZFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '절간에서 피우는 향이나 인센스의 느낌 같은 연기향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '474NM7WOAMSMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '라벤더 (아로마, 허브의 일종)', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '475MS7ARFSLVAA';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '476NS7VAWASWFW';
+UPDATE PERFUME_LIST SET COMENT1 = '땅, 흙, 풀',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '477NS7EASWWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '노란색 계열의 꽃향', COMENT3 = '스파이시하지만 따스한', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '478WS5WHYEWAAA';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '담배향', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '479NM7WATOWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '허브향, 흙향, 오리엔탈풍', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '480NS5ROWAPAPF';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '481NM5WHAMCIAA';
+UPDATE PERFUME_LIST SET COMENT1 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '가죽향', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '482WM5MUPOLEPF';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '쨍한 비누향', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '483WM5VAALPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '484WM7WOWAPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '흰색 계열의 꽃향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '485NM5CIARWHPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '과일향', COMENT3 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '486WS7WAUIAMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '487NM7AMWOCIAA';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '488NM5ARWOCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '스파이시하고 신선한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '489MM7AMPOFSFW';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '바닐라', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '여름, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '490WS7WHVASWMF';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '허브향, 흙향, 오리엔탈풍', COMENT3 = '흰색 계열의 꽃향', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '491WS7WOPAWHPF';
+UPDATE PERFUME_LIST SET COMENT1 = '바다향',  COMENT2 = '소금', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '492NM7MASAARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '장미', COMENT3 = '커피', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '493NS7WAROCFFW';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '라벤더 (아로마, 허브의 일종)', COMENT3 = '바닐라', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '494NM7ARLVVAAA';
+UPDATE PERFUME_LIST SET COMENT1 = '아몬드향 (너티의 일종)',  COMENT2 = '장미', COMENT3 = '꽃향 전반', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '495NM5MDROFLPF';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '흰꽃의 일종, 독특하고 관능적인 향', COMENT3 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '496NS7WHTUMUAA';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '바닐라', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '497WS7SWWHVAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '침엽수 진액 향, 우디계열', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '498NS7ROOUSWFW';
+UPDATE PERFUME_LIST SET COMENT1 = '침엽수 진액 향, 우디계열',  COMENT2 = '장미', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '499NS9OUROPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '500NM7WOWASWFW';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '카라멜', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '501NS7SWWACMFW';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '바닐라', COMENT3 = '파우더향 (화장품 분내)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '502NM5SWVAPOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '과일향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '503WM5FLWHUIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '아몬드향 (너티의 일종)', COMENT3 = '꽃향 전반', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '504NM5VAMDFLFW';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '더운 열대기후를 연상시키는 향, 열대 꽃이나 열대 과일 등', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '505NM5SWTRCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '꿀', COMENT3 = '담배향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '506NS9SWHOTOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '커피', COMENT3 = '스파이시하고 신선한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '507NS9WACFFSFW';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '508NM5UIWOWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '허브향, 흙향, 오리엔탈풍', COMENT3 = '럼주 (술)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '509MM5WOPARUFW';
+UPDATE PERFUME_LIST SET COMENT1 = '달달한 모든 향 (과일, 꿀 등도 포함)',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '흰색 계열의 꽃향', COMENT= '봄, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '510WM7SWCIWHPW';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '장미', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '511WS7VACIROFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하지만 부드러운', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '512NM5WOARSSFW';
+UPDATE PERFUME_LIST SET COMENT1 = '아쿠아, 바다, 깨끗, 쿨',  COMENT2 = '물향', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '513NM5OZAQARPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '과일향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '514NM5WOPOUIFW';
+UPDATE PERFUME_LIST SET COMENT1 = '바닐라',  COMENT2 = '크리미하고 달콤한 과일 향 (복숭아, 살구, 코코넛, 무화과 등)', COMENT3 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '515NS7VALASWFW';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '장미', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '516WS5UISWROPM';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '쨍한 비누향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '517NS7ARAMALPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '꽃향 전반', COMENT3 = '흰꽃의 일종, 독특하고 관능적인 향', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '518WS5WHFLTUAA';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '노란색 계열의 꽃향', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '519NS7WHWOYEPF';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '520WS7UIWAWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '521NM7UIPOIRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '더운 열대기후를 연상시키는 향, 열대 꽃이나 열대 과일 등', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '522NM5UIGRTRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '과일향',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '523NM5UISWWOAA';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '가죽향', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '524MS9WOLEARFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '스파이시하지만 따스한', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '525NS9WOPOWAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '초록색 풀과 잎사귀 향', COMENT3 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '526NM5CIGRFRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '바닐라', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '527NS7WASWVAFW';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '528NM5WOSWARPF';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '과일향', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '529NW5FLUIGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '가죽향',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '동물에게서 나오는 향료', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '530NM5LEPONMPF';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '장미', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '531NM5GRROCIPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '달달한 모든 향 (과일, 꿀 등도 포함)', COMENT3 = '크리미하고 달콤한 과일 향 (복숭아, 살구, 코코넛, 무화과 등)', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '532NW5WOSWLAAA';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT3 = '흰색 계열의 꽃향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '533NW5CIIRWHPM';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '스파이시하고 신선한', COMENT3 = '스파이시하지만 따스한', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '534NM5WOFSWAPF';
+UPDATE PERFUME_LIST SET COMENT1 = '아로마향 (허브향이랑 거의 동일)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '바다향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '535NM5ARFSMAPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시', COMENT3 = '꽃향 전반', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '536NM5ROAMFLPF';
+UPDATE PERFUME_LIST SET COMENT1 = '침엽수 진액 향, 우디계열',  COMENT2 = '스파이시하고 신선한', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '537NM5OUFSWOFW';
+UPDATE PERFUME_LIST SET COMENT1 = '라벤더 (아로마, 허브의 일종)',  COMENT2 = '스파이시하지만 부드러운', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '538NW5LVSSFSPF';
+UPDATE PERFUME_LIST SET COMENT1 = '꽃향 전반',  COMENT2 = '바닐라', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '539NS5FLVAWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '꽃향 전반', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '540NM5WHWOFLAA';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '보라색 아이리스 꽃, 파우더리한 아로마향, 부드러움', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '541NM5WAWOIRPF';
+UPDATE PERFUME_LIST SET COMENT1 = '초록색 풀과 잎사귀 향',  COMENT2 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT3 = '흰색 계열의 꽃향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '542NS7GRFRWHPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '사향노루가 분비하는 사향의 향, 부드러우면서도 관능적', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '543NS7WAMUARAA';
+UPDATE PERFUME_LIST SET COMENT1 = '나무의 굵은 줄기의 향, 드라이한 느낌',  COMENT2 = '파우더향 (화장품 분내)', COMENT3 = '장미', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '544WS7WOPOROFW';
+UPDATE PERFUME_LIST SET COMENT1 = '애니멀릭, 바닐라/머스크 느낌, 웜스파이시',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '쨍한 비누향', COMENT= '가을, 겨울에 어울리는 향수입니다.' WHERE PRODUCTID = '545WS7AMWOALFW';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '스파이시하고 신선한', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '546MM7CIWOFSAA';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '이끼', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '547MM7CIWOMOAA';
+UPDATE PERFUME_LIST SET COMENT1 = '흰색 계열의 꽃향',  COMENT2 = '스파이시하지만 따스한', COMENT3 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '548WM7WHWACIPF';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '스파이시하고 신선한', COMENT3 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '549MM5CIFSWOPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '나무의 굵은 줄기의 향, 드라이한 느낌', COMENT3 = '스파이시하고 신선한', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '550MM5CIWOFSPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '아로마향 (허브향이랑 거의 동일)', COMENT3 = '스파이시하고 신선한', COMENT= '모든 계절에 잘 어울리는 향수입니다.' WHERE PRODUCTID = '551MM7CIARFSAA';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '시트러스, 잎사귀향(GREEN), 물향, 쨍한 비누향(ALDEHYDIC)처럼 신선한 느낌을 주는 모든 향', COMENT3 = '꽃향 전반', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '552WM5WAFRFLPM';
+UPDATE PERFUME_LIST SET COMENT1 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)',  COMENT2 = '흰색 계열의 꽃향', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '553WM5CIWHGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '초록색 풀과 잎사귀 향', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '554NM5WACIGRPM';
+UPDATE PERFUME_LIST SET COMENT1 = '장미',  COMENT2 = '스파이시하지만 부드러운', COMENT3 = '허브향, 흙향, 오리엔탈풍', COMENT= '봄, 가을에 어울리는 향수입니다.' WHERE PRODUCTID = '555WS5ROSSPAPF';
+UPDATE PERFUME_LIST SET COMENT1 = '스파이시하지만 따스한',  COMENT2 = '시트러스 (감귤류 - 귤, 오렌지, 자몽, 유자 등)', COMENT3 = '아로마향 (허브향이랑 거의 동일)', COMENT= '봄, 여름에 어울리는 향수입니다.' WHERE PRODUCTID = '556NM3WACIARPM';

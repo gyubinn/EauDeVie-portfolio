@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ 
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.human.basic.domain.ProductListVO" alias="listVO"/>
+		<typeAlias type="com.human.basic.domain.ReviewVO" alias="review"/>
+  		<typeAlias type="com.human.basic.domain.CriteriaGyu" alias = "criteriaGyu"/>
+  		<typeAlias type="com.human.basic.domain.SearchCriteriaGyu" alias = "searchCriteriaGyu"/>
+  		<typeAlias type="com.human.basic.domain.MainReviewVO" alias = "mainReview"/>
+  		
+  		<!-- 로그인 -->
+		<typeAlias type="com.human.basic.domain.RecommVO" alias="recomm"/>
+
+  		<typeAlias type="com.human.basic.domain.Perfume_ListVO" alias="product"/>
+
+		<!-- 커뮤니티 -->
+		<typeAlias type="com.human.basic.domain.Perfume_StoryVO" alias = "board"/>
+  		<typeAlias type="com.human.basic.domain.Perfume_Story_CommVO" alias = "comment"/>
+  		<typeAlias type="com.human.basic.domain.MarketVO" alias = "market"/>
+  		<typeAlias type="com.human.basic.domain.Market_CommVO" alias = "mkComm"/>
+  		<typeAlias type="com.human.basic.domain.SearchCriteria" alias = "searchCriteria"/>
+  		
+		<!-- 향스타 -->
+		<typeAlias type="com.human.basic.domain.Hyangsta_PostVO" alias="hyPost"/>
+		<typeAlias type="com.human.basic.domain.Hyangsta_CommVO" alias="hyComm"/>
+		<typeAlias type="com.human.basic.domain.Hyangsta_LikeVO" alias="hyLike"/>
+		<typeAlias type="com.human.basic.domain.FollowVO" alias="hyFollow"/>
+		<typeAlias type="com.human.basic.domain.MemberVO" alias="member"/>
+	</typeAliases>
+
+</configuration>
